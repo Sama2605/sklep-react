@@ -63,6 +63,7 @@ const SSearchInput = styled.input`
 
 const MainLayout = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [searchedProducts, setSearchedProducts] = useState<Product[]>([]);
   const [searchInput, setSearchInput] = useState("");
 
   useEffect(() => {
@@ -90,14 +91,27 @@ const MainLayout = () => {
   //   }
   // }, [searchInput]);
 
-  const searchedProducts = products.filter((product) => {
+  useEffect(() => {
     if (searchInput.length < 2) {
-      return product;
+      setSearchedProducts(products);
     } else {
-      const productString = product.title.replaceAll(" ", "").toLowerCase();
-      return productString.includes(searchInput);
+      setSearchedProducts(
+        products.filter((product) => {
+          const productString = product.title.replaceAll(" ", "").toLowerCase();
+          return productString.includes(searchInput);
+        })
+      );
     }
-  });
+  }, [searchInput]);
+
+  // const searchedProducts = products.filter((product) => {
+  //   if (searchInput.length < 2) {
+  //     return ;
+  //   } else {
+  //     const productString = product.title.replaceAll(" ", "").toLowerCase();
+  //     return productString.includes(searchInput);
+  //   }
+  // });
 
   return (
     <SGrid>
