@@ -66,14 +66,6 @@ const MainLayout = () => {
   const [searchedProducts, setSearchedProducts] = useState<Product[]>([]);
   const [searchInput, setSearchInput] = useState("");
 
-  useEffect(() => {
-    fetch("https://fakestoreapi.com/products").then((res) =>
-      res.json().then((res) => {
-        setProducts(res);
-      })
-    );
-  }, []);
-
   // useEffect(() => {
   //   console.log(searchInput);
   //   if (searchInput.length < 2) {
@@ -91,18 +83,42 @@ const MainLayout = () => {
   //   }
   // }, [searchInput]);
 
-  useEffect(() => {
-    if (searchInput.length < 2) {
+  const onSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { value },
+    } = e;
+    if (value.length < 2) {
       setSearchedProducts(products);
     } else {
       setSearchedProducts(
         products.filter((product) => {
           const productString = product.title.replaceAll(" ", "").toLowerCase();
-          return productString.includes(searchInput);
+          return productString.includes(value);
         })
       );
     }
+  };
+
+  useEffect(() => {
+    // if (searchInput.length < 2) {
+    //   setSearchedProducts(products);
+    // } else {
+    //   setSearchedProducts(
+    //     products.filter((product) => {
+    //       const productString = product.title.replaceAll(" ", "").toLowerCase();
+    //       return productString.includes(searchInput);
+    //     })
+    //   );
+    // }
   }, [searchInput]);
+
+  useEffect(() => {
+    fetch("https://fakestoreapi.com/products").then((res) =>
+      res.json().then((res) => {
+        setProducts(res);
+      })
+    );
+  }, []);
 
   // const searchedProducts = products.filter((product) => {
   //   if (searchInput.length < 2) {
@@ -130,9 +146,9 @@ const MainLayout = () => {
           <SSearchInput
             type="text"
             placeholder="Szukaj..."
-            onChange={(e: any) => setSearchInput(e.target.value)}
+            onChange={(e: any) => onSearchInputChange(e)}
             // onChange={onSearchChange}
-            value={searchInput}
+            // value={searchInput}
           />
         </SInputContainer>
         <SDiv>
