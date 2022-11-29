@@ -20,7 +20,10 @@ const SHeaderProductTitle = styled.h2`
 const SImgProductPhoto = styled.img`
   width: 100px;
   height: 100px;
-  padding: 15px;
+  padding-top: 15px;
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
 const SProductPrice = styled.p`
