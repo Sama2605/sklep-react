@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { idText } from "typescript";
 import ErrorPage from "../components/ErrorPage";
 import ProductTile, { Product } from "../components/ProductTile";
+import { Outlet } from "react-router-dom";
 
 const SGrid = styled.div`
   display: grid;
@@ -124,7 +125,6 @@ const MainLayout = () => {
       })
     );
   }, []);
-  console.log(products);
 
   // const searchedProducts = products.filter((product) => {
   //   if (searchInput.length < 2) {
@@ -140,14 +140,15 @@ const MainLayout = () => {
       <nav>
         <SNav>
           <li>
-            <SNavLink href="#strona główna">Strona główna</SNavLink>
+            <SNavLink href="/">Strona główna</SNavLink>
           </li>
           <li>
-            <SNavLink href="#produkty">Produkty</SNavLink>
+            <SNavLink href="products">Produkty</SNavLink>
           </li>
         </SNav>
       </nav>
       <SMain>
+        <Outlet context={searchedProducts} />
         <SInputContainer>
           <SSearchInput
             type="text"
@@ -158,7 +159,7 @@ const MainLayout = () => {
             value={searchInput}
           />
         </SInputContainer>
-        {products.length <= 0 || searchedProducts.length <= 0 ? (
+        {products.length < 1 || searchedProducts.length < 1 ? (
           <ErrorPage />
         ) : (
           <SDiv>
