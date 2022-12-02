@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 
 const SProductTile = styled.div`
   border: 1px solid rgb(210, 206, 206);
@@ -34,19 +33,9 @@ const SProductPrice = styled.p`
 
 const SProductLink = styled.a`
   text-decoration: none;
-  /* border: 1px solid rgb(210, 206, 206); */
   border-radius: 5px;
   width: 10rem;
-  /* background-color: #fff; */
 `;
-
-// interface item {
-//   id: number;
-//   title: string;
-//   price: number;
-//   image: string;
-//   description: string;
-// }
 
 export interface Product {
   id: number;
@@ -61,13 +50,8 @@ interface IProps {
 }
 
 const ProductTile: React.FC<IProps> = (props) => {
-  const { id, title, price, image, description } = props.product;
-  const navigate = useNavigate();
-  // console.log(id);
-  // const handleClick = () => {
-  //   console.log(id);
-  //   navigate("/products/:productId");
-  // };
+  const { id, title, price, image } = props.product;
+
   return (
     <SProductTile>
       <SProductLink
@@ -76,8 +60,8 @@ const ProductTile: React.FC<IProps> = (props) => {
         // onClick={handleClick}
       >
         <SHeaderProductTitle>{title}</SHeaderProductTitle>
-        <SImgProductPhoto src={image} alt="" />
-        <p>${price}</p>
+        <SImgProductPhoto src={image} alt="product" />
+        <SProductPrice>${price}</SProductPrice>
       </SProductLink>
     </SProductTile>
   );
