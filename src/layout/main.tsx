@@ -1,6 +1,7 @@
 import { ChangeEvent, useState, useEffect } from "react";
 import styled from "styled-components";
 import { idText } from "typescript";
+import ErrorPage from "../components/ErrorPage";
 import ProductTile, { Product } from "../components/ProductTile";
 
 const SGrid = styled.div`
@@ -66,14 +67,6 @@ const MainLayout = () => {
   const [searchedProducts, setSearchedProducts] = useState<Product[]>([]);
   const [searchInput, setSearchInput] = useState("");
 
-  useEffect(() => {
-    fetch("https://fakestoreapi.com/products").then((res) =>
-      res.json().then((res) => {
-        setProducts(res);
-      })
-    );
-  }, []);
-
   // useEffect(() => {
   //   console.log(searchInput);
   //   if (searchInput.length < 2) {
@@ -91,6 +84,26 @@ const MainLayout = () => {
   //   }
   // }, [searchInput]);
 
+  /**
+   * Komponent niekontrolowany
+   */
+
+  // const onSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const {
+  //     target: { value },
+  //   } = e;
+  //   if (value.length < 2) {
+  //     setSearchedProducts(products);
+  //   } else {
+  //     setSearchedProducts(
+  //       products.filter((product) => {
+  //         const productString = product.title.replaceAll(" ", "").toLowerCase();
+  //         return productString.includes(value);
+  //       })
+  //     );
+  //   }
+  // };
+
   useEffect(() => {
     if (searchInput.length < 2) {
       setSearchedProducts(products);
@@ -102,7 +115,16 @@ const MainLayout = () => {
         })
       );
     }
-  }, [searchInput]);
+  }, [searchInput, products]);
+
+  useEffect(() => {
+    fetch("https://fakestoreapi.com/products").then((res) =>
+      res.json().then((res) => {
+        setProducts(res);
+      })
+    );
+  }, []);
+  console.log(products);
 
   // const searchedProducts = products.filter((product) => {
   //   if (searchInput.length < 2) {
@@ -130,16 +152,21 @@ const MainLayout = () => {
           <SSearchInput
             type="text"
             placeholder="Szukaj..."
+            // onChange={(e: any) => onSearchInputChange(e)}
             onChange={(e: any) => setSearchInput(e.target.value)}
             // onChange={onSearchChange}
             value={searchInput}
           />
         </SInputContainer>
-        <SDiv>
-          {searchedProducts.map((item) => (
-            <ProductTile key={item.id} product={item} />
-          ))}
-        </SDiv>
+        {products.length <= 0 || searchedProducts.length <= 0 ? (
+          <ErrorPage />
+        ) : (
+          <SDiv>
+            {searchedProducts.map((item) => (
+              <ProductTile key={item.id} product={item} />
+            ))}
+          </SDiv>
+        )}
       </SMain>
 
       <SFooter></SFooter>
