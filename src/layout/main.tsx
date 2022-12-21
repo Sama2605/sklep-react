@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Product } from "../components/ProductTile";
 import { Outlet } from "react-router-dom";
 
 const SGrid = styled.div`
@@ -48,16 +46,6 @@ const SFooter = styled.footer`
 `;
 
 const MainLayout = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-
-  useEffect(() => {
-    fetch("https://fakestoreapi.com/products").then((res) =>
-      res.json().then((res) => {
-        setProducts(res);
-      })
-    );
-  }, []);
-
   return (
     <SGrid>
       <nav>
@@ -71,7 +59,7 @@ const MainLayout = () => {
         </SNav>
       </nav>
       <SMain>
-        <Outlet context={products} />
+        <Outlet />
       </SMain>
       <SFooter>Sklep internetowy Gosia 2022</SFooter>
     </SGrid>

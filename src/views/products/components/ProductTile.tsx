@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Product } from "types";
 
 const SProductTile = styled.div`
   border: 1px solid rgb(210, 206, 206);
@@ -36,14 +37,6 @@ const SProductLink = styled.a`
   border-radius: 5px;
   width: 10rem;
 `;
-
-export interface Product {
-  id: number;
-  title: string;
-  price: number;
-  image: string;
-  description: string;
-}
 
 interface IProps {
   product: Product;
