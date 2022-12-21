@@ -8,6 +8,8 @@ function App() {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route path="/" element={<ListOfProducts />} />
+        </Route>
+        <Route path="/" element={<MainLayout />}>
           <Route path="/products/:productId" element={<SingleProduct />} />
         </Route>
       </Routes>
