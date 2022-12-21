@@ -1,8 +1,7 @@
-import { ChangeEvent, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { idText } from "typescript";
-import ErrorPage from "../components/ErrorPage";
-import ProductTile, { Product } from "../components/ProductTile";
+import { Product } from "../components/ProductTile";
+import { Outlet } from "react-router-dom";
 
 const SGrid = styled.div`
   display: grid;
@@ -13,7 +12,7 @@ const SGrid = styled.div`
     "main"
     "footer";
   width: 100%;
-  height: 100%;
+  height: 100vh;
 `;
 
 const SNav = styled.ul`
@@ -23,13 +22,19 @@ const SNav = styled.ul`
   list-style-type: none;
 `;
 
+const SNavLink = styled.a`
+  text-decoration: none;
+  text-align: center;
+  padding: 15px 15px;
+  color: rgb(0, 0, 0);
+`;
+
 const SMain = styled.main`
   grid-area: main;
   display: flex;
   flex-direction: column;
   padding: 20px;
   border-top: 1px rgb(0, 0, 0) solid;
-  border-bottom: 1px rgb(0, 0, 0) solid;
 `;
 
 const SFooter = styled.footer`
@@ -38,84 +43,12 @@ const SFooter = styled.footer`
   flex-direction: column;
   align-self: center;
   text-align: center;
-`;
-
-const SNavLink = styled.a`
-  text-decoration: none;
-  padding: 15px 15px;
-  color: rgb(0, 0, 0);
-`;
-
-const SDiv = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  gap: 25px 25px;
-`;
-
-const SInputContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  padding-bottom: 15px;
-`;
-
-const SSearchInput = styled.input`
-  width: 30%;
+  padding: 10px;
+  border-top: 1px rgb(0, 0, 0) solid;
 `;
 
 const MainLayout = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [searchedProducts, setSearchedProducts] = useState<Product[]>([]);
-  const [searchInput, setSearchInput] = useState("");
-
-  // useEffect(() => {
-  //   console.log(searchInput);
-  //   if (searchInput.length < 2) {
-  //     setProducts(products);
-  //   } else {
-  //     const searchedProducts = products.filter((product) => {
-  //       const productString = product.title.replaceAll(" ", "").toLowerCase();
-  //       return productString.includes(searchInput);
-  //     });
-  //     setProducts(searchedProducts);
-  //     // setProducts(products.map((product)=>{product == searchProducts ? searchProducts : products}))
-  //     // const newArr = [...searchProducts];
-  //     // setSearchResults(searchProducts);
-  //     // console.log(newArr);
-  //   }
-  // }, [searchInput]);
-
-  /**
-   * Komponent niekontrolowany
-   */
-
-  // const onSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-  //   const {
-  //     target: { value },
-  //   } = e;
-  //   if (value.length < 2) {
-  //     setSearchedProducts(products);
-  //   } else {
-  //     setSearchedProducts(
-  //       products.filter((product) => {
-  //         const productString = product.title.replaceAll(" ", "").toLowerCase();
-  //         return productString.includes(value);
-  //       })
-  //     );
-  //   }
-  // };
-
-  useEffect(() => {
-    if (searchInput.length < 2) {
-      setSearchedProducts(products);
-    } else {
-      setSearchedProducts(
-        products.filter((product) => {
-          const productString = product.title.replaceAll(" ", "").toLowerCase();
-          return productString.includes(searchInput);
-        })
-      );
-    }
-  }, [searchInput, products]);
 
   useEffect(() => {
     fetch("https://fakestoreapi.com/products").then((res) =>
@@ -124,52 +57,23 @@ const MainLayout = () => {
       })
     );
   }, []);
-  console.log(products);
-
-  // const searchedProducts = products.filter((product) => {
-  //   if (searchInput.length < 2) {
-  //     return ;
-  //   } else {
-  //     const productString = product.title.replaceAll(" ", "").toLowerCase();
-  //     return productString.includes(searchInput);
-  //   }
-  // });
 
   return (
     <SGrid>
       <nav>
         <SNav>
           <li>
-            <SNavLink href="#strona główna">Strona główna</SNavLink>
+            <SNavLink href="/">Strona główna</SNavLink>
           </li>
           <li>
-            <SNavLink href="#produkty">Produkty</SNavLink>
+            <SNavLink href="products">Produkty</SNavLink>
           </li>
         </SNav>
       </nav>
       <SMain>
-        <SInputContainer>
-          <SSearchInput
-            type="text"
-            placeholder="Szukaj..."
-            // onChange={(e: any) => onSearchInputChange(e)}
-            onChange={(e: any) => setSearchInput(e.target.value)}
-            // onChange={onSearchChange}
-            value={searchInput}
-          />
-        </SInputContainer>
-        {products.length <= 0 || searchedProducts.length <= 0 ? (
-          <ErrorPage />
-        ) : (
-          <SDiv>
-            {searchedProducts.map((item) => (
-              <ProductTile key={item.id} product={item} />
-            ))}
-          </SDiv>
-        )}
+        <Outlet context={products} />
       </SMain>
-
-      <SFooter></SFooter>
+      <SFooter>Sklep internetowy Gosia 2022</SFooter>
     </SGrid>
   );
 };

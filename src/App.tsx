@@ -1,7 +1,20 @@
 import MainLayout from "./layout/main";
-
+import { Router, Route, Routes, BrowserRouter } from "react-router-dom";
+import SingleProduct from "./components/SingleProduct";
+import ListOfProducts from "./components/ListOfProducts";
 function App() {
-  return <MainLayout />;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<MainLayout />}>
+          <Route path="/" element={<ListOfProducts />} />
+        </Route>
+        <Route path="/" element={<MainLayout />}>
+          <Route path="/products/:productId" element={<SingleProduct />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
