@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Product } from "../components/ProductTile";
 import { Outlet } from "react-router-dom";
+import { BsFillBasket2Fill } from "react-icons/bs";
+import { useShoppingCart } from "context/ShoppingCartContext";
 
 const SGrid = styled.div`
   display: grid;
@@ -48,16 +48,7 @@ const SFooter = styled.footer`
 `;
 
 const MainLayout = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-
-  useEffect(() => {
-    fetch("https://fakestoreapi.com/products").then((res) =>
-      res.json().then((res) => {
-        setProducts(res);
-      })
-    );
-  }, []);
-
+  const { cartQuantity } = useShoppingCart();
   return (
     <SGrid>
       <nav>
@@ -68,10 +59,16 @@ const MainLayout = () => {
           <li>
             <SNavLink href="products">Produkty</SNavLink>
           </li>
+          <li>
+            <a href="/cart">
+              <BsFillBasket2Fill />
+            </a>
+            <div>{cartQuantity}</div>
+          </li>
         </SNav>
       </nav>
       <SMain>
-        <Outlet context={products} />
+        <Outlet />
       </SMain>
       <SFooter>Sklep internetowy Gosia 2022</SFooter>
     </SGrid>

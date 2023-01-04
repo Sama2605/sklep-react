@@ -1,5 +1,9 @@
 import styled from "styled-components";
-import { useOutletContext, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Product } from "types";
+import useGetProducts from "hooks/api/use-get-products";
+import { useShoppingCart } from "context/ShoppingCartContext";
 
 const SSingleProduct = styled.div`
   display: flex;
@@ -33,8 +37,8 @@ const SProductPrice = styled.p`
   color: rgb(97, 132, 177);
 `;
 
-const SingleProduct = () => {
-  const products = useOutletContext() as any;
+const ProductView = () => {
+  const { data: products, loading } = useGetProducts();
 
   const { productId } = useParams();
 
@@ -43,7 +47,6 @@ const SingleProduct = () => {
   const image = product?.image;
   const description = product?.description;
   const price = product?.price;
-
   return (
     <SSingleProduct>
       <SProductTitle>{title}</SProductTitle>
@@ -53,4 +56,4 @@ const SingleProduct = () => {
     </SSingleProduct>
   );
 };
-export default SingleProduct;
+export default ProductView;

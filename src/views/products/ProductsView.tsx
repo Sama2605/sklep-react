@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import ErrorPage from "../components/ErrorPage";
-import ProductTile, { Product } from "../components/ProductTile";
-import { useOutletContext } from "react-router-dom";
+import ErrorPage from "components/ErrorPage";
+import ProductTile from "views/products/components/ProductTile";
+import { Product } from "types";
+import useGetProducts from "../../hooks/api/use-get-products";
 
 const SDiv = styled.div`
   display: flex;
@@ -20,10 +21,10 @@ const SSearchInput = styled.input`
   width: 30%;
 `;
 
-const ListOfProducts = () => {
+const ProductsView = () => {
+  const {data: products, loading} = useGetProducts();
   const [searchedProducts, setSearchedProducts] = useState<Product[]>([]);
   const [searchInput, setSearchInput] = useState("");
-  const products = useOutletContext() as any;
 
   /**
    * Komponent niekontrolowany
@@ -58,6 +59,10 @@ const ListOfProducts = () => {
     }
   }, [searchInput, products]);
 
+  if (loading) {
+    return <span>Loading...</span>
+  }
+
   return (
     <>
       <SInputContainer>
@@ -82,4 +87,4 @@ const ListOfProducts = () => {
   );
 };
 
-export default ListOfProducts;
+export default ProductsView;
