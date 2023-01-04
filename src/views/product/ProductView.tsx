@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { Product } from "types";
-import useGetProducts from "../../hooks/api/use-get-products";
+import useGetProducts from "hooks/api/use-get-products";
+import { useShoppingCart } from "context/ShoppingCartContext";
 
 const SSingleProduct = styled.div`
   display: flex;
@@ -37,7 +38,7 @@ const SProductPrice = styled.p`
 `;
 
 const ProductView = () => {
-  const {data: products, loading} = useGetProducts();
+  const { data: products, loading } = useGetProducts();
 
   const { productId } = useParams();
 
@@ -46,7 +47,6 @@ const ProductView = () => {
   const image = product?.image;
   const description = product?.description;
   const price = product?.price;
-
   return (
     <SSingleProduct>
       <SProductTitle>{title}</SProductTitle>

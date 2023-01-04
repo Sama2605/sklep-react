@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { Outlet } from "react-router-dom";
+import { BsFillBasket2Fill } from "react-icons/bs";
+import { useShoppingCart } from "context/ShoppingCartContext";
 
 const SGrid = styled.div`
   display: grid;
@@ -46,6 +48,7 @@ const SFooter = styled.footer`
 `;
 
 const MainLayout = () => {
+  const { cartQuantity } = useShoppingCart();
   return (
     <SGrid>
       <nav>
@@ -55,6 +58,12 @@ const MainLayout = () => {
           </li>
           <li>
             <SNavLink href="products">Produkty</SNavLink>
+          </li>
+          <li>
+            <a href="/cart">
+              <BsFillBasket2Fill />
+            </a>
+            <div>{cartQuantity}</div>
           </li>
         </SNav>
       </nav>

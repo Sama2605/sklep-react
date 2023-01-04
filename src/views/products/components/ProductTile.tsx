@@ -1,4 +1,5 @@
-import React from "react";
+import { useShoppingCart } from "context/ShoppingCartContext";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Product } from "types";
 
@@ -38,12 +39,29 @@ const SProductLink = styled.a`
   width: 10rem;
 `;
 
+const SCartButton = styled.button``;
+
 interface IProps {
   product: Product;
 }
 
 const ProductTile: React.FC<IProps> = (props) => {
+  // const [cart, setCart] = useState<IProps[]>([]);
+  // console.log(cart);
   const { id, title, price, image } = props.product;
+
+  // function addToCart(e: React.MouseEvent<HTMLButtonElement>, item: IProps) {
+  //   e.preventDefault();
+  //   console.log(item);
+  //   setCart([...cart, item]);
+  //   // setCart([props.product]);
+  //   // localStorage.setItem("cart", JSON.stringify(cart));
+  // }
+  // const addToCart = (e: React.MouseEvent<HTMLButtonElement>, item: IProps) => {
+  //   console.log(item);
+  const { getItemQuantity, increaseCartQuantity } = useShoppingCart();
+
+  const quantity = getItemQuantity(id);
 
   return (
     <SProductTile>
@@ -56,6 +74,10 @@ const ProductTile: React.FC<IProps> = (props) => {
         <SImgProductPhoto src={image} alt="product" />
         <SProductPrice>${price}</SProductPrice>
       </SProductLink>
+      <SCartButton onClick={() => increaseCartQuantity(id)}>
+        Dodaj do koszyka
+      </SCartButton>
+      <div>{quantity}</div>
     </SProductTile>
   );
 };
